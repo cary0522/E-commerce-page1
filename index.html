@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/5292bd8fe4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="page1.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="headerPage"></div>
+    <div class="product container-fluid d-flex flex-wrap justify-content-center"></div>
+    <nav aria-label="Page">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a href="#" class="page-link text-warning" id="page-link-1">1</a>
+            </li>
+            <li class="page-item">
+                <a href="#" class="page-link text-warning" id="page-link-2">2</a>
+            </li>
+            <li class="page-item">
+                <a href="#" class="page-link text-warning" id="page-link-3">3</a>
+            </li>
+            <li class="page-item">
+                <a href="#" class="page-link text-warning" id="page-link-4">4</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="footerPage"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script>
+        $(".headerPage").load("../shared/header.html");
+        $(".footerPage").load("../shared/footer.html");
+        $("head").append(`<link rel="stylesheet" href="../shared/shared.css">`);
+        let productArr = [];
+
+        fetch("http://localhost:3001/").then(function get(response) {
+            return response.json();
+        }).then(function (json) {
+            productArr = json;
+            for (var i = 0; i < 5; i++) {
+                let newDivList = document.createElement("div");
+                newDivList.id = `newDiv${i}`;
+                newDivList.innerHTML =
+                    `<div class="col-3 m-3">
+                                <div class="product_img">
+                                    <img src="${productArr[i].image}" alt="">    
+                                </div>
+                                <div class="product_name">${productArr[i].name}</div>
+                                <div class="product_price">
+                                    ${productArr[i].price}
+                                </div>
+                                <div class="product_icons">
+                                    <a href="#">
+                                        <i class="fa-solid fa-heart text-decoration-none text-warning"></i>
+                                    </a>
+                                    <a href="#">
+                                        <i class="fa-solid fa-cart-shopping text-decoration-none text-warning"></i>
+                                    </a>
+                                </div>
+                            </div>`
+
+                $(".product").append(newDivList);
+            }
+        }).catch(function error() {
+            console.log("error!");
+        })
+
+
+        $(".page-link").click(function pageLink() {
+            $(".product").empty();
+            for (var a = 1; a < 5; a++) {
+                if (this.id == `page-link-${a}`) {
+                    for (var p = (a - 1) * 5; p < (a - 1) * 5 + 5; p++) {
+                        let newDivList = document.createElement("div");
+                        newDivList.id = `newDiv${p}`;
+                        newDivList.innerHTML =
+                            `<div class="col-3 m-3">
+                                    <div class="product_img">
+                                        <img src="${productArr[p].image}" alt="">    
+                                    </div>
+                                    <div class="product_name">${productArr[p].name}</div>
+                                    <div class="product_price">
+                                        ${productArr[p].price}
+                                    </div>
+                                    <div class="product_icons">
+                                        <a href="#">
+                                            <i class="fa-solid fa-heart text-decoration-none text-warning"></i>
+                                        </a>
+                                        <a href="#">
+                                            <i class="fa-solid fa-cart-shopping text-decoration-none text-warning"></i>
+                                        </a>
+                                    </div>
+                                </div>`
+                        $(".product").append(newDivList);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
